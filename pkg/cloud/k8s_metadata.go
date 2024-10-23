@@ -6,6 +6,7 @@ import (
 	"os"
 	"regexp"
 
+	"github.com/kubernetes-sigs/aws-efs-csi-driver/pkg/util"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
@@ -25,7 +26,8 @@ var DefaultKubernetesAPIClient = func() (kubernetes.Interface, error) {
 }
 
 type kubernetesApiMetadataProvider struct {
-	api kubernetes.Interface
+	api  kubernetes.Interface
+	mode util.DriverMode
 }
 
 func (k kubernetesApiMetadataProvider) getMetadata() (MetadataService, error) {
@@ -39,19 +41,26 @@ func (k kubernetesApiMetadataProvider) getMetadata() (MetadataService, error) {
 		return nil, fmt.Errorf("error getting Node %v: %v", nodeName, err)
 	}
 
-	providerId := node.Spec.ProviderID
-	if providerId == "" {
-		return nil, fmt.Errorf("node providerID empty, cannot parse")
-	}
+	if k.mode != util.ControllerMode {
+		providerId := node.Spec.ProviderID
+		if providerId == "" {
+			return nil, fmt.Errorf("node providerID empty, cannot parse")
+		}
 
-	re := regexp.MustCompile("i-[a-z0-9]+$|[a-z0-9]{32}")
-	instanceID := re.FindString(providerId)
-	if instanceID == "" {
-		return nil, fmt.Errorf("did not find aws instance ID in node providerID string")
+		re := regexp.MustCompile("i-[a-z0-9]+$|[a-z0-9]{32}")
+		instanceID := re.FindString(providerId)
+		if instanceID == "" {
+			return nil, fmt.Errorf("did not find aws instance ID in node providerID string")
+		}
+
+		return &metadata{
+			instanceID:       instanceID,
+			region:           node.Labels["topology.kubernetes.io/region"],
+			availabilityZone: node.Labels["topology.kubernetes.io/zone"],
+		}, nil
 	}
 
 	return &metadata{
-		instanceID:       instanceID,
 		region:           node.Labels["topology.kubernetes.io/region"],
 		availabilityZone: node.Labels["topology.kubernetes.io/zone"],
 	}, nil

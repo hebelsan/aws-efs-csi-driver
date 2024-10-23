@@ -31,6 +31,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/request"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/efs"
+	"github.com/kubernetes-sigs/aws-efs-csi-driver/pkg/util"
 	"k8s.io/klog/v2"
 )
 
@@ -113,17 +114,17 @@ type cloud struct {
 
 // NewCloud returns a new instance of AWS cloud
 // It panics if session is invalid
-func NewCloud() (Cloud, error) {
-	return createCloud("")
+func NewCloud(mode util.DriverMode) (Cloud, error) {
+	return createCloud("", mode)
 }
 
 // NewCloudWithRole returns a new instance of AWS cloud after assuming an aws role
 // It panics if driver does not have permissions to assume role.
 func NewCloudWithRole(awsRoleArn string) (Cloud, error) {
-	return createCloud(awsRoleArn)
+	return createCloud(awsRoleArn, "")
 }
 
-func createCloud(awsRoleArn string) (Cloud, error) {
+func createCloud(awsRoleArn string, mode util.DriverMode) (Cloud, error) {
 	sess := session.Must(session.NewSession(&aws.Config{}))
 	svc := ec2metadata.New(sess)
 	api, err := DefaultKubernetesAPIClient()
@@ -132,7 +133,7 @@ func createCloud(awsRoleArn string) (Cloud, error) {
 		klog.Warningf("Could not create Kubernetes Client: %v", err)
 	}
 
-	metadataProvider, err := GetNewMetadataProvider(svc, api)
+	metadataProvider, err := GetNewMetadataProvider(svc, api, mode)
 
 	if err != nil {
 		return nil, fmt.Errorf("error creating MetadataProvider: %v", err)

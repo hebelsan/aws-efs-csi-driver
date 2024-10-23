@@ -19,6 +19,7 @@ package cloud
 import (
 	"fmt"
 
+	"github.com/kubernetes-sigs/aws-efs-csi-driver/pkg/util"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/klog/v2"
 )
@@ -60,7 +61,7 @@ func (m *metadata) GetAvailabilityZone() string {
 }
 
 // GetNewMetadataProvider returns a MetadataProvider on which can be invoked getMetadata() to extract the metadata.
-func GetNewMetadataProvider(svc EC2Metadata, clientset kubernetes.Interface) (MetadataProvider, error) {
+func GetNewMetadataProvider(svc EC2Metadata, clientset kubernetes.Interface, mode util.DriverMode) (MetadataProvider, error) {
 	// check if it is running in ECS otherwise default fall back to ec2
 	klog.Info("getting MetadataService...")
 	if isDriverBootedInECS() {
@@ -71,7 +72,7 @@ func GetNewMetadataProvider(svc EC2Metadata, clientset kubernetes.Interface) (Me
 		return ec2MetadataProvider{ec2MetadataService: svc}, nil
 	} else if clientset != nil {
 		klog.Info("retrieving metadata from Kubernetes API")
-		return kubernetesApiMetadataProvider{api: clientset}, nil
+		return kubernetesApiMetadataProvider{api: clientset, mode: mode}, nil
 	} else {
 		return nil, fmt.Errorf("could not create MetadataProvider from any source")
 	}

@@ -33,11 +33,12 @@ import (
 const (
 	driverName = "efs.csi.aws.com"
 
-	// AgentNotReadyTaintKey contains the key of taints to be removed on driver startup
+	// AgentNotReadyNodeTaintKey contains the key of taints to be removed on driver startup
 	AgentNotReadyNodeTaintKey = "efs.csi.aws.com/agent-not-ready"
 )
 
 type Driver struct {
+	mode                     util.DriverMode
 	endpoint                 string
 	nodeID                   string
 	srv                      *grpc.Server
@@ -54,8 +55,8 @@ type Driver struct {
 	tags                     map[string]string
 }
 
-func NewDriver(endpoint, efsUtilsCfgPath, efsUtilsStaticFilesPath, tags string, volMetricsOptIn bool, volMetricsRefreshPeriod float64, volMetricsFsRateLimit int, deleteAccessPointRootDir bool) *Driver {
-	cloud, err := cloud.NewCloud()
+func NewDriver(endpoint, efsUtilsCfgPath, efsUtilsStaticFilesPath, tags string, volMetricsOptIn bool, volMetricsRefreshPeriod float64, volMetricsFsRateLimit int, deleteAccessPointRootDir bool, mode util.DriverMode) *Driver {
+	cloud, err := cloud.NewCloud(mode)
 	if err != nil {
 		klog.Fatalln(err)
 	}
@@ -63,6 +64,7 @@ func NewDriver(endpoint, efsUtilsCfgPath, efsUtilsStaticFilesPath, tags string, 
 	nodeCaps := SetNodeCapOptInFeatures(volMetricsOptIn)
 	watchdog := newExecWatchdog(efsUtilsCfgPath, efsUtilsStaticFilesPath, "amazon-efs-mount-watchdog")
 	return &Driver{
+		mode:                     mode,
 		endpoint:                 endpoint,
 		nodeID:                   cloud.GetMetadata().GetInstanceID(),
 		mounter:                  newNodeMounter(),
@@ -114,10 +116,14 @@ func (d *Driver) Run() error {
 	d.srv = grpc.NewServer(opts...)
 
 	csi.RegisterIdentityServer(d.srv, d)
-	klog.Info("Registering Node Server")
-	csi.RegisterNodeServer(d.srv, d)
-	klog.Info("Registering Controller Server")
-	csi.RegisterControllerServer(d.srv, d)
+	if d.mode == util.NodeMode || d.mode == util.AllMode {
+		klog.Info("Registering Node Server")
+		csi.RegisterNodeServer(d.srv, d)
+	}
+	if d.mode == util.ControllerMode || d.mode == util.AllMode {
+		klog.Info("Registering Controller Server")
+		csi.RegisterControllerServer(d.srv, d)
+	}
 
 	klog.Info("Starting efs-utils watchdog")
 	if err := d.efsWatchdog.start(); err != nil {

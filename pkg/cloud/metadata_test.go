@@ -76,7 +76,7 @@ func TestGetMetadataProvider(t *testing.T) {
 
 			defer mockCtrl.Finish()
 
-			mp, _ := GetNewMetadataProvider(mockEC2Metadata, fake.NewSimpleClientset())
+			mp, _ := GetNewMetadataProvider(mockEC2Metadata, fake.NewSimpleClientset(), "")
 
 			providerType := reflect.TypeOf(mp).Name()
 

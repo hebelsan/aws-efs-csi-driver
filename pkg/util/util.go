@@ -28,6 +28,18 @@ import (
 	"strings"
 )
 
+// DriverMode is the operating mode of the CSI driver.
+type DriverMode string
+
+const (
+	// ControllerMode is the mode that only starts the controller service.
+	ControllerMode DriverMode = "controller"
+	// NodeMode is the mode that only starts the node service.
+	NodeMode DriverMode = "node"
+	// AllMode is the mode that only starts both the controller and the node service.
+	AllMode DriverMode = "all"
+)
+
 func ParseEndpoint(endpoint string) (string, string, error) {
 	u, err := url.Parse(endpoint)
 	if err != nil {

@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/kubernetes-sigs/aws-efs-csi-driver/pkg/util"
 	"k8s.io/klog/v2"
 
 	"github.com/kubernetes-sigs/aws-efs-csi-driver/pkg/driver"
@@ -31,6 +32,7 @@ const etcAmazonEfs = "/etc/amazon/efs"
 
 func main() {
 	var (
+		mode                     = flag.String("mode", string(util.AllMode), "Driver mode. One of (all, node, controller)")
 		endpoint                 = flag.String("endpoint", "unix://tmp/csi.sock", "CSI Endpoint")
 		version                  = flag.Bool("version", false, "Print the version and exit")
 		efsUtilsCfgDirPath       = flag.String("efs-utils-config-dir-path", "/var/amazon/efs", "The preferred path for the efs-utils config directory. efs-utils-config-legacy-dir-path will be used if it is not empty, otherwise efs-utils-config-dir-path will be used.")
@@ -60,7 +62,9 @@ func main() {
 	if err != nil {
 		klog.Fatalln(err)
 	}
-	drv := driver.NewDriver(*endpoint, etcAmazonEfs, *efsUtilsStaticFilesPath, *tags, *volMetricsOptIn, *volMetricsRefreshPeriod, *volMetricsFsRateLimit, *deleteAccessPointRootDir)
+
+	klog.Infof("creating driver in mode: %s", *mode)
+	drv := driver.NewDriver(*endpoint, etcAmazonEfs, *efsUtilsStaticFilesPath, *tags, *volMetricsOptIn, *volMetricsRefreshPeriod, *volMetricsFsRateLimit, *deleteAccessPointRootDir, util.DriverMode(*mode))
 	if err := drv.Run(); err != nil {
 		klog.Fatalln(err)
 	}
