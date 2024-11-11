@@ -125,11 +125,20 @@ func NewCloudWithRole(awsRoleArn string) (Cloud, error) {
 }
 
 func createCloud(awsRoleArn string, mode util.DriverMode) (Cloud, error) {
+	//if mode == util.ControllerMode {
+	//	efsClient := efs.New(session.Must(session.NewSession()))
+	//	klog.V(5).Infof("EFS Client created using the following endpoint: %+v", efsClient.Client.ClientInfo.Endpoint)
+	//	return &cloud{
+	//		metadata: &metadata{},
+	//		efs:      efsClient,
+	//	}, nil
+	//}
+
 	sess := session.Must(session.NewSession(&aws.Config{}))
 	svc := ec2metadata.New(sess)
 	api, err := DefaultKubernetesAPIClient()
 
-	if err != nil && !isDriverBootedInECS() {
+	if err != nil && (!isDriverBootedInECS() || mode == util.ControllerMode) {
 		klog.Warningf("Could not create Kubernetes Client: %v", err)
 	}
 
