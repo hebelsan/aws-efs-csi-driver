@@ -47,12 +47,15 @@ func setup(mockCtrl *gomock.Controller, volStatter VolStatter, volMetricsOptIn b
 	mockMounter := mocks.NewMockMounter(mockCtrl)
 	nodeCaps := SetNodeCapOptInFeatures(volMetricsOptIn)
 	driver := &Driver{
-		endpoint:        "endpoint",
-		nodeID:          "nodeID",
-		mounter:         mockMounter,
-		volStatter:      volStatter,
-		volMetricsOptIn: true,
-		nodeCaps:        nodeCaps,
+		options: &Options{
+			Mode:            NodeMode,
+			Endpoint:        "endpoint",
+			VolMetricsOptIn: true,
+		},
+		nodeID:     "nodeID",
+		mounter:    mockMounter,
+		volStatter: volStatter,
+		nodeCaps:   nodeCaps,
 	}
 	ctx := context.Background()
 	return mockMounter, driver, ctx

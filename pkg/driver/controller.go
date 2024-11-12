@@ -410,7 +410,7 @@ func (d *Driver) DeleteVolume(ctx context.Context, req *csi.DeleteVolumeRequest)
 	if accessPointId != "" {
 
 		// Delete access point root directory if delete-access-point-root-dir is set.
-		if d.deleteAccessPointRootDir {
+		if d.options.DeleteAccessPointRootDir {
 			// Check if Access point exists.
 			// If access point exists, retrieve its root directory and delete it/
 			accessPoint, err := localCloud.DescribeAccessPoint(ctx, accessPointId)

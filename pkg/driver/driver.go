@@ -18,6 +18,7 @@ package driver
 
 import (
 	"context"
+	"fmt"
 	"net"
 	"strings"
 	"time"
@@ -30,52 +31,54 @@ import (
 	"github.com/kubernetes-sigs/aws-efs-csi-driver/pkg/util"
 )
 
+// Mode is the operating mode of the CSI driver.
+type Mode string
+
 const (
+	// ControllerMode is the mode that only starts the controller service.
+	ControllerMode Mode = "controller"
+	// NodeMode is the mode that only starts the node service.
+	NodeMode Mode = "node"
+	// AllMode is the mode that only starts both the controller and the node service.
+	AllMode Mode = "all"
+
 	driverName = "efs.csi.aws.com"
 
-	// AgentNotReadyTaintKey contains the key of taints to be removed on driver startup
+	// AgentNotReadyNodeTaintKey contains the key of taints to be removed on driver startup
 	AgentNotReadyNodeTaintKey = "efs.csi.aws.com/agent-not-ready"
 )
 
 type Driver struct {
-	endpoint                 string
-	nodeID                   string
-	srv                      *grpc.Server
-	mounter                  Mounter
-	efsWatchdog              Watchdog
-	cloud                    cloud.Cloud
-	nodeCaps                 []csi.NodeServiceCapability_RPC_Type
-	volMetricsOptIn          bool
-	volMetricsRefreshPeriod  float64
-	volMetricsFsRateLimit    int
-	volStatter               VolStatter
-	gidAllocator             GidAllocator
-	deleteAccessPointRootDir bool
-	tags                     map[string]string
+	options      *Options
+	nodeID       string
+	srv          *grpc.Server
+	mounter      Mounter
+	efsWatchdog  Watchdog
+	cloud        cloud.Cloud
+	nodeCaps     []csi.NodeServiceCapability_RPC_Type
+	volStatter   VolStatter
+	gidAllocator GidAllocator
+	tags         map[string]string
 }
 
-func NewDriver(endpoint, efsUtilsCfgPath, efsUtilsStaticFilesPath, tags string, volMetricsOptIn bool, volMetricsRefreshPeriod float64, volMetricsFsRateLimit int, deleteAccessPointRootDir bool) *Driver {
-	cloud, err := cloud.NewCloud()
+func NewDriver(efsUtilsCfgPath string, o *Options) *Driver {
+	cloud, err := cloud.NewCloud(o.Mode == ControllerMode)
 	if err != nil {
 		klog.Fatalln(err)
 	}
 
-	nodeCaps := SetNodeCapOptInFeatures(volMetricsOptIn)
-	watchdog := newExecWatchdog(efsUtilsCfgPath, efsUtilsStaticFilesPath, "amazon-efs-mount-watchdog")
+	nodeCaps := SetNodeCapOptInFeatures(o.VolMetricsOptIn)
+	watchdog := newExecWatchdog(efsUtilsCfgPath, o.EfsUtilsStaticFilesPath, "amazon-efs-mount-watchdog")
 	return &Driver{
-		endpoint:                 endpoint,
-		nodeID:                   cloud.GetMetadata().GetInstanceID(),
-		mounter:                  newNodeMounter(),
-		efsWatchdog:              watchdog,
-		cloud:                    cloud,
-		nodeCaps:                 nodeCaps,
-		volStatter:               NewVolStatter(),
-		volMetricsOptIn:          volMetricsOptIn,
-		volMetricsRefreshPeriod:  volMetricsRefreshPeriod,
-		volMetricsFsRateLimit:    volMetricsFsRateLimit,
-		gidAllocator:             NewGidAllocator(),
-		deleteAccessPointRootDir: deleteAccessPointRootDir,
-		tags:                     parseTagsFromStr(strings.TrimSpace(tags)),
+		options:      o,
+		nodeID:       cloud.GetMetadata().GetInstanceID(),
+		mounter:      newNodeMounter(),
+		efsWatchdog:  watchdog,
+		cloud:        cloud,
+		nodeCaps:     nodeCaps,
+		volStatter:   NewVolStatter(),
+		gidAllocator: NewGidAllocator(),
+		tags:         parseTagsFromStr(strings.TrimSpace(o.Tags)),
 	}
 }
 
@@ -91,7 +94,7 @@ func SetNodeCapOptInFeatures(volMetricsOptIn bool) []csi.NodeServiceCapability_R
 }
 
 func (d *Driver) Run() error {
-	scheme, addr, err := util.ParseEndpoint(d.endpoint)
+	scheme, addr, err := util.ParseEndpoint(d.options.Endpoint)
 	if err != nil {
 		return err
 	}
@@ -114,10 +117,22 @@ func (d *Driver) Run() error {
 	d.srv = grpc.NewServer(opts...)
 
 	csi.RegisterIdentityServer(d.srv, d)
-	klog.Info("Registering Node Server")
-	csi.RegisterNodeServer(d.srv, d)
-	klog.Info("Registering Controller Server")
-	csi.RegisterControllerServer(d.srv, d)
+
+	switch d.options.Mode {
+	case ControllerMode:
+		klog.Info("Registering Controller Server")
+		csi.RegisterControllerServer(d.srv, d)
+	case NodeMode:
+		klog.Info("Registering Node Server")
+		csi.RegisterNodeServer(d.srv, d)
+	case AllMode:
+		klog.Info("Registering Node Server")
+		csi.RegisterNodeServer(d.srv, d)
+		klog.Info("Registering Controller Server")
+		csi.RegisterControllerServer(d.srv, d)
+	default:
+		return fmt.Errorf("unknown mode: %s", d.options.Mode)
+	}
 
 	klog.Info("Starting efs-utils watchdog")
 	if err := d.efsWatchdog.start(); err != nil {
@@ -130,9 +145,11 @@ func (d *Driver) Run() error {
 
 	// Remove taint from node to indicate driver startup success
 	// This is done at the last possible moment to prevent race conditions or false positive removals
-	go tryRemoveNotReadyTaintUntilSucceed(time.Second, func() error {
-		return removeNotReadyTaint(cloud.DefaultKubernetesAPIClient)
-	})
+	if d.options.Mode != ControllerMode {
+		go tryRemoveNotReadyTaintUntilSucceed(time.Second, func() error {
+			return removeNotReadyTaint(cloud.DefaultKubernetesAPIClient)
+		})
+	}
 
 	klog.Infof("Listening for connections on address: %#v", listener.Addr())
 	return d.srv.Serve(listener)

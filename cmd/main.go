@@ -20,6 +20,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"k8s.io/klog/v2"
 
@@ -30,19 +31,15 @@ import (
 const etcAmazonEfs = "/etc/amazon/efs"
 
 func main() {
+	fs := flag.NewFlagSet("aws-ebs-csi-driver", flag.ExitOnError)
+
 	var (
-		endpoint                 = flag.String("endpoint", "unix://tmp/csi.sock", "CSI Endpoint")
-		version                  = flag.Bool("version", false, "Print the version and exit")
-		efsUtilsCfgDirPath       = flag.String("efs-utils-config-dir-path", "/var/amazon/efs", "The preferred path for the efs-utils config directory. efs-utils-config-legacy-dir-path will be used if it is not empty, otherwise efs-utils-config-dir-path will be used.")
-		efsUtilsCfgLegacyDirPath = flag.String("efs-utils-config-legacy-dir-path", "/etc/amazon/efs-legacy", "The path to the legacy efs-utils config directory mounted from the host path /etc/amazon/efs")
-		efsUtilsStaticFilesPath  = flag.String("efs-utils-static-files-path", "/etc/amazon/efs-static-files/", "The path to efs-utils static files directory")
-		volMetricsOptIn          = flag.Bool("vol-metrics-opt-in", false, "Opt in to emit volume metrics")
-		volMetricsRefreshPeriod  = flag.Float64("vol-metrics-refresh-period", 240, "Refresh period for volume metrics in minutes")
-		volMetricsFsRateLimit    = flag.Int("vol-metrics-fs-rate-limit", 5, "Volume metrics routines rate limiter per file system")
-		deleteAccessPointRootDir = flag.Bool("delete-access-point-root-dir", false,
-			"Opt in to delete access point root directory by DeleteVolume. By default, DeleteVolume will delete the access point behind Persistent Volume and deleting access point will not delete the access point root directory or its contents.")
-		tags = flag.String("tags", "", "Space separated key:value pairs which will be added as tags for EFS resources. For example, 'environment:prod region:us-east-1'")
+		version = fs.Bool("version", false, "Print the version and exit")
+		args    = os.Args[1:]
+		cmd     = string(driver.AllMode)
+		options = driver.Options{}
 	)
+
 	klog.InitFlags(nil)
 	flag.Parse()
 
@@ -55,12 +52,29 @@ func main() {
 		os.Exit(0)
 	}
 
+	if len(os.Args) > 1 && !strings.HasPrefix(os.Args[1], "-") {
+		cmd = os.Args[1]
+		args = os.Args[2:]
+	}
+
+	if err := options.AddCmd(cmd); err != nil {
+		klog.ErrorS(err, "Failed to parse cmd")
+		klog.FlushAndExit(klog.ExitFlushTimeout, 0)
+	}
+
+	options.AddFlags(fs)
+
+	if err := fs.Parse(args); err != nil {
+		klog.ErrorS(err, "Failed to parse options")
+		klog.FlushAndExit(klog.ExitFlushTimeout, 0)
+	}
+
 	// chose which configuration directory we will use and create a symlink to it
-	err := driver.InitConfigDir(*efsUtilsCfgLegacyDirPath, *efsUtilsCfgDirPath, etcAmazonEfs)
+	err := driver.InitConfigDir(options.EfsUtilsCfgLegacyDirPath, options.EfsUtilsCfgDirPath, etcAmazonEfs)
 	if err != nil {
 		klog.Fatalln(err)
 	}
-	drv := driver.NewDriver(*endpoint, etcAmazonEfs, *efsUtilsStaticFilesPath, *tags, *volMetricsOptIn, *volMetricsRefreshPeriod, *volMetricsFsRateLimit, *deleteAccessPointRootDir)
+	drv := driver.NewDriver(etcAmazonEfs, &options)
 	if err := drv.Run(); err != nil {
 		klog.Fatalln(err)
 	}

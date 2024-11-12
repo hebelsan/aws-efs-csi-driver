@@ -47,7 +47,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -112,7 +115,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -179,7 +185,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -261,7 +270,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -390,7 +402,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -480,7 +495,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -539,7 +557,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr(""),
@@ -599,7 +620,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -655,7 +679,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr("cluster:efs"),
@@ -714,7 +741,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr("cluster-efs"),
@@ -773,7 +803,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr(""),
@@ -836,7 +869,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr(""),
@@ -906,7 +942,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr(""),
@@ -974,7 +1013,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr(""),
@@ -1045,7 +1087,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr(""),
@@ -1117,7 +1162,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr(""),
@@ -1186,7 +1234,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr(""),
@@ -1251,7 +1302,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr(""),
@@ -1317,7 +1371,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr(""),
@@ -1385,7 +1442,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1413,7 +1473,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1442,7 +1505,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1474,7 +1540,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1516,7 +1585,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr(""),
@@ -1564,7 +1636,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1606,7 +1681,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1641,7 +1719,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1675,7 +1756,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1709,7 +1793,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1744,7 +1831,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1780,7 +1870,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1816,7 +1909,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1852,7 +1948,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1888,7 +1987,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1924,7 +2026,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1960,7 +2065,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -1997,7 +2105,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2034,7 +2145,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2070,7 +2184,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2106,7 +2223,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2146,7 +2266,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2184,7 +2307,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2224,7 +2350,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2262,7 +2391,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2302,7 +2434,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2340,7 +2475,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2379,7 +2517,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2418,7 +2559,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2477,7 +2621,10 @@ func TestCreateVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr(""),
@@ -2526,7 +2673,10 @@ func TestCreateVolume(t *testing.T) {
 				subPathPattern := "${.PVC.name}/${foo}"
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2570,7 +2720,10 @@ func TestCreateVolume(t *testing.T) {
 				subPathPattern := "this-directory-name-is-far-too-long-for-any-practical-purposes-and-only-serves-to-prove-a-point"
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2614,7 +2767,10 @@ func TestCreateVolume(t *testing.T) {
 				subPathPattern := "a/b/c/d/e/f"
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2675,7 +2831,10 @@ func TestDeleteVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2701,11 +2860,14 @@ func TestDeleteVolume(t *testing.T) {
 				mockMounter := mocks.NewMockMounter(mockCtl)
 
 				driver := &Driver{
-					endpoint:                 endpoint,
-					cloud:                    mockCloud,
-					mounter:                  mockMounter,
-					gidAllocator:             NewGidAllocator(),
-					deleteAccessPointRootDir: true,
+					options: &Options{
+						Mode:                     ControllerMode,
+						Endpoint:                 endpoint,
+						DeleteAccessPointRootDir: true,
+					},
+					cloud:        mockCloud,
+					mounter:      mockMounter,
+					gidAllocator: NewGidAllocator(),
 				}
 
 				req := &csi.DeleteVolumeRequest{
@@ -2740,11 +2902,14 @@ func TestDeleteVolume(t *testing.T) {
 				mockMounter := mocks.NewMockMounter(mockCtl)
 
 				driver := &Driver{
-					endpoint:                 endpoint,
-					cloud:                    mockCloud,
-					mounter:                  mockMounter,
-					gidAllocator:             NewGidAllocator(),
-					deleteAccessPointRootDir: true,
+					options: &Options{
+						Mode:                     ControllerMode,
+						Endpoint:                 endpoint,
+						DeleteAccessPointRootDir: true,
+					},
+					cloud:        mockCloud,
+					mounter:      mockMounter,
+					gidAllocator: NewGidAllocator(),
 				}
 
 				req := &csi.DeleteVolumeRequest{
@@ -2768,11 +2933,14 @@ func TestDeleteVolume(t *testing.T) {
 				mockMounter := mocks.NewMockMounter(mockCtl)
 
 				driver := &Driver{
-					endpoint:                 endpoint,
-					cloud:                    mockCloud,
-					mounter:                  mockMounter,
-					gidAllocator:             NewGidAllocator(),
-					deleteAccessPointRootDir: true,
+					options: &Options{
+						Mode:                     ControllerMode,
+						Endpoint:                 endpoint,
+						DeleteAccessPointRootDir: true,
+					},
+					cloud:        mockCloud,
+					mounter:      mockMounter,
+					gidAllocator: NewGidAllocator(),
 				}
 
 				req := &csi.DeleteVolumeRequest{
@@ -2796,11 +2964,14 @@ func TestDeleteVolume(t *testing.T) {
 				mockMounter := mocks.NewMockMounter(mockCtl)
 
 				driver := &Driver{
-					endpoint:                 endpoint,
-					cloud:                    mockCloud,
-					mounter:                  mockMounter,
-					gidAllocator:             NewGidAllocator(),
-					deleteAccessPointRootDir: true,
+					options: &Options{
+						Mode:                     ControllerMode,
+						Endpoint:                 endpoint,
+						DeleteAccessPointRootDir: true,
+					},
+					cloud:        mockCloud,
+					mounter:      mockMounter,
+					gidAllocator: NewGidAllocator(),
 				}
 
 				req := &csi.DeleteVolumeRequest{
@@ -2824,11 +2995,14 @@ func TestDeleteVolume(t *testing.T) {
 				mockMounter := mocks.NewMockMounter(mockCtl)
 
 				driver := &Driver{
-					endpoint:                 endpoint,
-					cloud:                    mockCloud,
-					mounter:                  mockMounter,
-					gidAllocator:             NewGidAllocator(),
-					deleteAccessPointRootDir: true,
+					options: &Options{
+						Mode:                     ControllerMode,
+						Endpoint:                 endpoint,
+						DeleteAccessPointRootDir: true,
+					},
+					cloud:        mockCloud,
+					mounter:      mockMounter,
+					gidAllocator: NewGidAllocator(),
 				}
 
 				req := &csi.DeleteVolumeRequest{
@@ -2860,11 +3034,14 @@ func TestDeleteVolume(t *testing.T) {
 				mockMounter := mocks.NewMockMounter(mockCtl)
 
 				driver := &Driver{
-					endpoint:                 endpoint,
-					cloud:                    mockCloud,
-					mounter:                  mockMounter,
-					gidAllocator:             NewGidAllocator(),
-					deleteAccessPointRootDir: true,
+					options: &Options{
+						Mode:                     ControllerMode,
+						Endpoint:                 endpoint,
+						DeleteAccessPointRootDir: true,
+					},
+					cloud:        mockCloud,
+					mounter:      mockMounter,
+					gidAllocator: NewGidAllocator(),
 				}
 
 				req := &csi.DeleteVolumeRequest{
@@ -2897,11 +3074,14 @@ func TestDeleteVolume(t *testing.T) {
 				mockMounter := mocks.NewMockMounter(mockCtl)
 
 				driver := &Driver{
-					endpoint:                 endpoint,
-					cloud:                    mockCloud,
-					mounter:                  mockMounter,
-					gidAllocator:             NewGidAllocator(),
-					deleteAccessPointRootDir: true,
+					options: &Options{
+						Mode:                     ControllerMode,
+						Endpoint:                 endpoint,
+						DeleteAccessPointRootDir: true,
+					},
+					cloud:        mockCloud,
+					mounter:      mockMounter,
+					gidAllocator: NewGidAllocator(),
 				}
 
 				req := &csi.DeleteVolumeRequest{
@@ -2934,7 +3114,10 @@ func TestDeleteVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2959,7 +3142,10 @@ func TestDeleteVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -2984,7 +3170,10 @@ func TestDeleteVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -3009,7 +3198,10 @@ func TestDeleteVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 				}
@@ -3033,7 +3225,10 @@ func TestDeleteVolume(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint:     endpoint,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
 					cloud:        mockCloud,
 					gidAllocator: NewGidAllocator(),
 					tags:         parseTagsFromStr(""),
@@ -3097,8 +3292,11 @@ func TestValidateVolumeCapabilities(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint: endpoint,
-					cloud:    mockCloud,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
+					cloud: mockCloud,
 				}
 
 				req := &csi.ValidateVolumeCapabilitiesRequest{
@@ -3127,8 +3325,11 @@ func TestValidateVolumeCapabilities(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint: endpoint,
-					cloud:    mockCloud,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
+					cloud: mockCloud,
 				}
 
 				req := &csi.ValidateVolumeCapabilitiesRequest{
@@ -3157,8 +3358,11 @@ func TestValidateVolumeCapabilities(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint: endpoint,
-					cloud:    mockCloud,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
+					cloud: mockCloud,
 				}
 
 				req := &csi.ValidateVolumeCapabilitiesRequest{
@@ -3182,8 +3386,11 @@ func TestValidateVolumeCapabilities(t *testing.T) {
 				mockCloud := mocks.NewMockCloud(mockCtl)
 
 				driver := &Driver{
-					endpoint: endpoint,
-					cloud:    mockCloud,
+					options: &Options{
+						Mode:     ControllerMode,
+						Endpoint: endpoint,
+					},
+					cloud: mockCloud,
 				}
 
 				req := &csi.ValidateVolumeCapabilitiesRequest{
@@ -3211,8 +3418,11 @@ func TestControllerGetCapabilities(t *testing.T) {
 	mockCloud := mocks.NewMockCloud(mockCtl)
 
 	driver := &Driver{
-		endpoint: endpoint,
-		cloud:    mockCloud,
+		options: &Options{
+			Mode:     ControllerMode,
+			Endpoint: endpoint,
+		},
+		cloud: mockCloud,
 	}
 
 	ctx := context.Background()

@@ -206,7 +206,7 @@ func (d *Driver) NodePublishVolume(ctx context.Context, req *csi.NodePublishVolu
 	klog.V(5).Infof("NodePublishVolume: %s was mounted", target)
 
 	//Increment volume Id counter
-	if d.volMetricsOptIn {
+	if d.options.VolMetricsOptIn {
 		if value, ok := volumeIdCounter[req.GetVolumeId()]; ok {
 			volumeIdCounter[req.GetVolumeId()] = value + 1
 		} else {
@@ -251,7 +251,7 @@ func (d *Driver) NodeUnpublishVolume(ctx context.Context, req *csi.NodeUnpublish
 
 	//TODO: If `du` is running on a volume, unmount waits for it to complete. We should stop `du` on unmount in the future for NodeUnpublish
 	//Decrement Volume ID counter and evict cache if counter is 0.
-	if d.volMetricsOptIn {
+	if d.options.VolMetricsOptIn {
 		if value, ok := volumeIdCounter[req.GetVolumeId()]; ok {
 			value -= 1
 			if value < 1 {
@@ -289,7 +289,7 @@ func (d *Driver) NodeGetVolumeStats(ctx context.Context, req *csi.NodeGetVolumeS
 		return nil, status.Errorf(codes.Internal, "Failed to invoke stat on volume path %s: %v", target, err)
 	}
 
-	volMetrics, err := d.volStatter.computeVolumeMetrics(volId, target, d.volMetricsRefreshPeriod, d.volMetricsFsRateLimit)
+	volMetrics, err := d.volStatter.computeVolumeMetrics(volId, target, d.options.VolMetricsRefreshPeriod, d.options.VolMetricsFsRateLimit)
 
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Could not get metrics: %v ", err)

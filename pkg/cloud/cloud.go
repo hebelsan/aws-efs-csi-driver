@@ -20,11 +20,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-
-	"github.com/aws/smithy-go"
 	"math/rand"
 	"os"
 	"time"
+
+	"github.com/aws/smithy-go"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -116,7 +116,11 @@ type cloud struct {
 
 // NewCloud returns a new instance of AWS cloud
 // It panics if session is invalid
-func NewCloud() (Cloud, error) {
+func NewCloud(isControllerMode bool) (Cloud, error) {
+	region := os.Getenv("AWS_REGION")
+	if isControllerMode && region != "" {
+		return createControllerCloud(region)
+	}
 	return createCloud("")
 }
 
@@ -155,6 +159,20 @@ func createCloud(awsRoleArn string) (Cloud, error) {
 	return &cloud{
 		metadata: metadata,
 		efs:      efs_client,
+	}, nil
+}
+
+func createControllerCloud(region string) (Cloud, error) {
+	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(region))
+	if err != nil {
+		return nil, err
+	}
+	efsClient := efs.NewFromConfig(cfg)
+	return &cloud{
+		metadata: &metadata{
+			region: os.Getenv("AWS_REGION"),
+		},
+		efs: efsClient,
 	}, nil
 }
 
