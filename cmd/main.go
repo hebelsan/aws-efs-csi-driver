@@ -40,8 +40,7 @@ func main() {
 		options = driver.Options{}
 	)
 
-	klog.InitFlags(nil)
-	flag.Parse()
+	klog.InitFlags(fs)
 
 	if *version {
 		info, err := driver.GetVersionJSON()
@@ -61,6 +60,7 @@ func main() {
 		klog.ErrorS(err, "Failed to parse cmd")
 		klog.FlushAndExit(klog.ExitFlushTimeout, 0)
 	}
+	klog.Infof("Starting driver in mode: %s", string(options.Mode))
 
 	options.AddFlags(fs)
 
